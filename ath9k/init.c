@@ -1142,12 +1142,16 @@ static int __init ath9k_init(void)
 {
 	int error;
 
+pr_info("ath9k_init()\n");
+
 	error = ath_pci_init();
 	if (error < 0) {
 		pr_err("No PCI devices found, driver not installed\n");
 		error = -ENODEV;
 		goto err_out;
 	}
+
+pr_info("ath_pci_init()\n");
 
 	error = ath_ahb_init();
 	if (error < 0) {
