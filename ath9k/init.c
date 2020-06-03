@@ -1023,6 +1023,8 @@ int ath9k_init_device(u16 devid, struct ath_softc *sc,
 	int error = 0;
 	struct ath_regulatory *reg;
 
+pr_info("ath9k_init_softc()\n");
+
 	/* Bring up device */
 	error = ath9k_init_softc(devid, sc, bus_ops);	// 初始化 softc	// 在这个过程中会初始化 tasklet（包括beacon帧的tasklet）
 	if (error)
@@ -1040,10 +1042,14 @@ int ath9k_init_device(u16 devid, struct ath_softc *sc,
 
 	reg = &common->regulatory;
 
+pr_info("ath_tx_init()\n");
+
 	/* Setup TX DMA */
 	error = ath_tx_init(sc, ATH_TXBUF);		// 初始化数据收发存储器访问
 	if (error != 0)
 		goto deinit;
+
+pr_info("ath_rx_init()\n");
 
 	/* Setup RX DMA */
 	error = ath_rx_init(sc, ATH_RXBUF);
@@ -1058,6 +1064,8 @@ int ath9k_init_device(u16 devid, struct ath_softc *sc,
 		IEEE80211_TPT_LEDTRIG_FL_RADIO, ath9k_tpt_blink,
 		ARRAY_SIZE(ath9k_tpt_blink));
 #endif
+
+pr_info("ieee80211_register_hw()\n");
 
 	/* Register with mac80211 */
 	error = ieee80211_register_hw(hw);	// 注册设备
@@ -1076,6 +1084,9 @@ int ath9k_init_device(u16 devid, struct ath_softc *sc,
 		if (error)
 			goto debug_cleanup;
 	}
+
+pr_info("ath_init_leds()\n");
+pr_info("ath_start_rfkill_poll()\n");
 
 	ath_init_leds(sc);
 	ath_start_rfkill_poll(sc);

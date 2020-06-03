@@ -893,7 +893,7 @@ static int ath_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 	char hw_name[64];
 	int msi_enabled = 0;
 
-pr_info("ath_pci_probe\n");
+pr_info("ath_pci_probe()\n");
 
 	if (pcim_enable_device(pdev))
 		return -EIO;
@@ -949,6 +949,8 @@ pr_info("ath_pci_probe\n");
 		return -ENODEV;
 	}
 
+pr_info("ieee80211_alloc_hw()\n");
+
 	ath9k_fill_chanctx_ops();
 	hw = ieee80211_alloc_hw(sizeof(struct ath_softc), &ath9k_ops);	// 1
 	if (!hw) {
@@ -985,6 +987,8 @@ pr_info("ath_pci_probe\n");
 	}
 
 	sc->irq = pdev->irq;
+
+pr_info("ath9k_init_device()\n");
 
 	ret = ath9k_init_device(id->device, sc, &ath_pci_bus_ops);		// 2
 	if (ret) {
