@@ -893,6 +893,8 @@ static int ath_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 	char hw_name[64];
 	int msi_enabled = 0;
 
+pr_info("ath_pci_probe\n");
+
 	if (pcim_enable_device(pdev))
 		return -EIO;
 
@@ -948,7 +950,7 @@ static int ath_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 	}
 
 	ath9k_fill_chanctx_ops();
-	hw = ieee80211_alloc_hw(sizeof(struct ath_softc), &ath9k_ops);
+	hw = ieee80211_alloc_hw(sizeof(struct ath_softc), &ath9k_ops);	// 1
 	if (!hw) {
 		dev_err(&pdev->dev, "No memory for ieee80211_hw\n");
 		return -ENOMEM;
@@ -984,7 +986,7 @@ static int ath_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 
 	sc->irq = pdev->irq;
 
-	ret = ath9k_init_device(id->device, sc, &ath_pci_bus_ops);
+	ret = ath9k_init_device(id->device, sc, &ath_pci_bus_ops);		// 2
 	if (ret) {
 		dev_err(&pdev->dev, "Failed to initialize device\n");
 		goto err_init;
@@ -1084,14 +1086,14 @@ MODULE_DEVICE_TABLE(pci, ath_pci_id_table);
 static struct pci_driver ath_pci_driver = {
 	.name       = "ath9k",
 	.id_table   = ath_pci_id_table,
-	.probe      = ath_pci_probe,
-	.remove     = ath_pci_remove,
+	.probe      = ath_pci_probe,	// 注册完成后，系统会自动调用它
+	.remove     = ath_pci_remove,	// 在 unregister 时候调用
 	.driver.pm  = ATH9K_PM_OPS,
 };
 
 int ath_pci_init(void)
 {
-	return pci_register_driver(&ath_pci_driver);
+	return pci_register_driver(&ath_pci_driver);	// 注册pci驱动
 }
 
 void ath_pci_exit(void)

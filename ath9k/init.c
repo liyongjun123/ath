@@ -1024,7 +1024,7 @@ int ath9k_init_device(u16 devid, struct ath_softc *sc,
 	struct ath_regulatory *reg;
 
 	/* Bring up device */
-	error = ath9k_init_softc(devid, sc, bus_ops);
+	error = ath9k_init_softc(devid, sc, bus_ops);	// 初始化 softc	// 在这个过程中会初始化 tasklet（包括beacon帧的tasklet）
 	if (error)
 		return error;
 
@@ -1041,7 +1041,7 @@ int ath9k_init_device(u16 devid, struct ath_softc *sc,
 	reg = &common->regulatory;
 
 	/* Setup TX DMA */
-	error = ath_tx_init(sc, ATH_TXBUF);
+	error = ath_tx_init(sc, ATH_TXBUF);		// 初始化数据收发存储器访问
 	if (error != 0)
 		goto deinit;
 
@@ -1060,7 +1060,7 @@ int ath9k_init_device(u16 devid, struct ath_softc *sc,
 #endif
 
 	/* Register with mac80211 */
-	error = ieee80211_register_hw(hw);
+	error = ieee80211_register_hw(hw);	// 注册设备
 	if (error)
 		goto rx_cleanup;
 
@@ -1144,7 +1144,7 @@ static int __init ath9k_init(void)
 
 pr_info("ath9k_init()\n");
 
-	error = ath_pci_init();
+	error = ath_pci_init();	// 初始化PCI总线上的网卡设备
 	if (error < 0) {
 		pr_err("No PCI devices found, driver not installed\n");
 		error = -ENODEV;
@@ -1153,7 +1153,7 @@ pr_info("ath9k_init()\n");
 
 pr_info("ath_pci_init()\n");
 
-	error = ath_ahb_init();
+	error = ath_ahb_init();	// 初始化AHB总线上的网卡设备
 	if (error < 0) {
 		error = -ENODEV;
 		goto err_pci_exit;

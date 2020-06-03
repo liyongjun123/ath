@@ -163,8 +163,8 @@ static int ath_ahb_remove(struct platform_device *pdev)
 }
 
 static struct platform_driver ath_ahb_driver = {
-	.probe      = ath_ahb_probe,
-	.remove     = ath_ahb_remove,
+	.probe      = ath_ahb_probe,	// 注册完成后，系统会自动调用它
+	.remove     = ath_ahb_remove,	// 在 unregister 时候调用
 	.driver		= {
 		.name	= "ath9k",
 	},
@@ -175,7 +175,7 @@ MODULE_DEVICE_TABLE(platform, ath9k_platform_id_table);
 
 int ath_ahb_init(void)
 {
-	return platform_driver_register(&ath_ahb_driver);
+	return platform_driver_register(&ath_ahb_driver);	// 注册ahb驱动
 }
 
 void ath_ahb_exit(void)

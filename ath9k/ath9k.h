@@ -991,22 +991,25 @@ void ath_ant_comb_scan(struct ath_softc *sc, struct ath_rx_status *rs);
 #define AIRTIME_USE_NEW_QUEUES	BIT(2)
 #define AIRTIME_ACTIVE(flags) (!!(flags & (AIRTIME_USE_TX|AIRTIME_USE_RX)))
 
+// 在 ath9k 的驱动中，几乎最顶层的数据结构是 ath_softc，这个数据结构几乎随处可见。
+// ath_softc 是硬件与MAC层进行交互的中间载体，很多有用的网络参数都可以从 ath_softc 中得到，
+// 对于进一步的网卡驱动开发，收集网络数据等很有帮助
 struct ath_softc {
-	struct ieee80211_hw *hw;
-	struct device *dev;
+	struct ieee80211_hw *hw;	// 保存硬件信息
+	struct device *dev;			// 当前工作的设备
 
 	struct survey_info *cur_survey;
 	struct survey_info survey[ATH9K_NUM_CHANNELS];
 
 	spinlock_t intr_lock;
 	struct tasklet_struct intr_tq;
-	struct tasklet_struct bcon_tasklet;
-	struct ath_hw *sc_ah;
-	void __iomem *mem;
+	struct tasklet_struct bcon_tasklet;		// 结构体定义在 include <linux/interrupt.h> 用于中断管理
+	struct ath_hw *sc_ah;	// hw 的包装结构体
+	void __iomem *mem;		// 内存区域
 	int irq;
 	spinlock_t sc_serial_rw;
 	spinlock_t sc_pm_lock;
-	spinlock_t sc_pcu_lock;
+	spinlock_t sc_pcu_lock;	// 进行数据读取，或者处理 skb 时需要的锁
 	struct mutex mutex;
 	struct work_struct paprd_work;
 	struct work_struct hw_reset_work;

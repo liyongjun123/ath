@@ -392,10 +392,10 @@
 #define AR_Q_STATUS_RING_START	0x830
 #define AR_Q_STATUS_RING_END	0x834
 
-#define AR_Q_TXE             0x0840
+#define AR_Q_TXE             0x0840		// AR9462 Tx Queue Enable // Write a 1 in bit position N sets the TXE bit for QCU N.	// QCU Queue Control  Unit:通过便利TX描述符链表和将帧数据从主机传输到目标DCU
 #define AR_Q_TXE_M           0x000003FF
 
-#define AR_Q_TXD             0x0880
+#define AR_Q_TXD             0x0880		// Tx Queue Disable
 #define AR_Q_TXD_M           0x000003FF
 
 #define AR_Q0_CBRCFG         0x08c0
