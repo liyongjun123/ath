@@ -1163,6 +1163,8 @@ static int __init ath9k_init(void)
 
 pr_info("ath9k_init()\n");
 
+pr_info("ath_pci_init()\n");
+
 	error = ath_pci_init();	// 初始化PCI总线上的网卡设备
 	if (error < 0) {
 		pr_err("No PCI devices found, driver not installed\n");
@@ -1170,7 +1172,7 @@ pr_info("ath9k_init()\n");
 		goto err_out;
 	}
 
-pr_info("ath_pci_init()\n");
+
 
 	error = ath_ahb_init();	// 初始化AHB总线上的网卡设备
 	if (error < 0) {
