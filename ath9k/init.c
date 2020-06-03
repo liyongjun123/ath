@@ -1031,8 +1031,16 @@ pr_info("ath9k_init_softc()\n");
 		return error;
 
 	ah = sc->sc_ah;
+
+pr_info("ath9k_hw_common()\n");
+
 	common = ath9k_hw_common(ah);
+
+pr_info("ath9k_set_hw_capab()\n");
+
 	ath9k_set_hw_capab(sc, hw);
+
+pr_info("ath_regd_init()\n");
 
 	/* Initialize regulatory */
 	error = ath_regd_init(&common->regulatory, sc->hw->wiphy,
